@@ -16,7 +16,7 @@ const PRESET_BUCKETS = [
   { id: 'invest', name: 'Investments', color: '#7048e8', saving: true }
 ];
 const DEFAULT_CATS = [['Food', '🍽️'], ['Transport', '🚇'], ['Housing', '🏠'], ['Bills', '🧾'], ['Fun', '🎉'], ['Health', '💊'], ['Shopping', '🛍️'], ['Other', '📦']];
-const CURRENCIES = { EUR: 'fr-FR', USD: 'en-US', GBP: 'en-GB', INR: 'en-IN', CHF: 'de-CH', CAD: 'en-CA', AUD: 'en-AU', JPY: 'ja-JP', SGD: 'en-SG', AED: 'en-AE' };
+const CURRENCIES = { INR: 'en-IN', EUR: 'fr-FR', USD: 'en-US', GBP: 'en-GB', CHF: 'de-CH', CAD: 'en-CA', AUD: 'en-AU', JPY: 'ja-JP', SGD: 'en-SG', AED: 'en-AE' };
 const FONTS = {
   manrope: 'Manrope', grotesk: '"Space Grotesk"', dmsans: '"DM Sans"', system: '-apple-system,system-ui'
 };
@@ -109,11 +109,11 @@ async function hashPin(pin, salt) {
 
 let _fmt = null, _fmtKey = '';
 function money(n) {
-  const c = (S && S.settings.currency) || 'EUR';
+  const c = (S && S.settings.currency) || 'INR';
   if (c !== _fmtKey) {
     _fmtKey = c;
     try { _fmt = new Intl.NumberFormat(CURRENCIES[c] || undefined, { style: 'currency', currency: c }); }
-    catch (e) { _fmt = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }); }
+    catch (e) { _fmt = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }); }
   }
   return _fmt.format(n || 0);
 }
@@ -133,8 +133,8 @@ function save() { if (S && active) store.set(KEY.data(active), S); }
 function normalize(d) {
   d = d && typeof d === 'object' ? d : {};
   d.v = 2;
-  d.settings = Object.assign({ currency: 'EUR', theme: 'auto', accent: ACCENTS[0], privacy: false, font: 'manrope', radius: 'round' }, d.settings || {});
-  if (!CURRENCIES[d.settings.currency]) d.settings.currency = 'EUR';
+  d.settings = Object.assign({ currency: 'INR', theme: 'auto', accent: ACCENTS[0], privacy: false, font: 'manrope', radius: 'round' }, d.settings || {});
+  if (!CURRENCIES[d.settings.currency]) d.settings.currency = 'INR';
   d.inc = d.inc && typeof d.inc === 'object' ? d.inc : {};
   d.income = +d.income || 0;
   d.entries = Array.isArray(d.entries) ? d.entries.filter(e => e && /^\d{4}-\d{2}-\d{2}$/.test(e.date) && +e.amount > 0) : [];
@@ -504,7 +504,7 @@ function settingsHtml() {
 
 /* ---------- Onboarding & lock ---------- */
 function onboardHtml() {
-  const o = ui.onb || (ui.onb = { buckets: ['pea', 'savings', 'badminton'], name: '', cur: 'EUR', inc: '' });
+  const o = ui.onb || (ui.onb = { buckets: ['pea', 'savings', 'badminton'], name: '', cur: 'INR', inc: '' });
   const first = !profiles.length, legacy = first && store.get(KEY.legacy, null);
   return `<div class="center"><div class="onb">
     <div class="logo">${I.logo}</div>
@@ -515,7 +515,7 @@ function onboardHtml() {
       <li>${I.wifi}<span><b>Works offline.</b> Install it on your home screen like an app.</span></li></ul>` : ''}
     <div class="field"><label for="o-name">What should we call you?</label><input class="f" id="o-name" placeholder="Your name" maxlength="40" value="${esc(o.name)}" onkeydown="if(event.key==='Enter')createProfile()"></div>
     <div class="two"><div class="field"><label for="o-cur">Currency</label><select class="f" id="o-cur">${Object.keys(CURRENCIES).map(c => `<option ${o.cur === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div>
-      <div class="field"><label for="o-inc">Monthly money</label><input class="f" id="o-inc" inputmode="decimal" placeholder="e.g. 1500" value="${esc(o.inc)}"></div></div>
+      <div class="field"><label for="o-inc">Monthly money</label><input class="f" id="o-inc" inputmode="decimal" placeholder="e.g. 50000" value="${esc(o.inc)}"></div></div>
     ${legacy ? '<p class="note">We found data from the earlier version on this device. It will be brought into your profile.</p>'
       : `<div class="field"><label>What do you set money aside for?</label><div class="chips">${PRESET_BUCKETS.map(b => `<button class="chip${o.buckets.includes(b.id) ? ' on' : ''}" onclick="onbToggle('${b.id}')">${esc(b.name)}</button>`).join('')}</div><small class="mut">You can rename these or add your own any time.</small></div>`}
     <button class="save" onclick="createProfile()">Get started</button>
