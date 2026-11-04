@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My Money</title>
+<meta name="description" content="A private, customizable money tracker. See what's left this month, where your money goes and how your savings grow. Your data never leaves your device.">
+<meta name="theme-color" content="#eef2f4">
+<meta name="color-scheme" content="light dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="My Money">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta property="og:title" content="My Money">
+<meta property="og:description" content="A private, customizable money tracker that runs entirely in your browser.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main id="app" class="enter"><noscript><p style="padding:40px 0;text-align:center">My Money needs JavaScript to run.</p></noscript></main>
+<button class="fab" id="fab" onclick="openEntry('expense')" hidden><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add<kbd>N</kbd></button>
+<div class="ts" id="ts" role="status" aria-live="polite"></div>
+<div class="ov" id="ov" onclick="if(event.target===this)closeSheet()"><div class="sh" id="sh" role="dialog" aria-modal="true"></div></div>
+<script src="app.js"></script>
+</body>
+</html>
